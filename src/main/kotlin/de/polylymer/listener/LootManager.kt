@@ -6,6 +6,7 @@ import net.axay.kspigot.event.listen
 import org.bukkit.Sound
 import org.bukkit.entity.ArmorStand
 import org.bukkit.event.player.PlayerInteractAtEntityEvent
+import org.litote.kmongo.bson
 import org.litote.kmongo.findOne
 
 object LootManager {
@@ -19,6 +20,8 @@ object LootManager {
                     for (itemStack in lootableBody.loot) {
                         it.rightClicked.world.dropItem(it.rightClicked.location, itemStack)
                     }
+                    it.rightClicked.remove()
+                    MongoManager.BODIES.deleteOne("{\"uuid\":\"${it.rightClicked.uniqueId.toString()}\"}".bson)
                 }
             }
         }
