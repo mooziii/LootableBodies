@@ -32,6 +32,15 @@ object LootManager {
                 if(it.entity.scoreboardTags.contains("isBody:true")) {
                     if(it.damager is Player) {
                         if((it.damager as Player).inventory.itemInMainHand.type.name.contains("SHOVEL")) {
+                            if(it.entity.scoreboardTags.contains("hasLoot:true")) {
+                                it.damager.world.playSound(it.damager.location, Sound.ENTITY_LEASH_KNOT_BREAK, 1f,1f)
+                                val lootableBody = MongoManager.BODIES.findOne("{\"uuid\":\"${it.entity.uniqueId.toString()}\"}")!!
+                                for (itemStack in lootableBody.loot) {
+                                    it.entity.world.dropItem(it.entity.location, itemStack)
+                                }
+                                it.entity.removeScoreboardTag("hasLoot:true")
+                                MongoManager.BODIES.deleteOne("{\"uuid\":\"${it.entity.uniqueId.toString()}\"}".bson)
+                            }
                             it.entity.remove()
                         } else {
                             it.isCancelled = true
