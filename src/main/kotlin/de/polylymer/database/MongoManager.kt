@@ -9,4 +9,6 @@ object MongoManager {
 
     val BODIES = mongoDB.getCollectionOrCreate<LootableBody>("LOOTABLEBODIES_BODIES")
 
+    val STONES = mongoDB.getCollectionOrCreate<Gravestone>("LOOTABLEBODIES_GRAVESTONES")
+
 }
