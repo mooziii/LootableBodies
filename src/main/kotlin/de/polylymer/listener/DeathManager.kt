@@ -31,6 +31,10 @@ object DeathManager {
     init {
         listen<PlayerDeathEvent> {
             if(!it.entity.world.getGameRuleValue(GameRule.KEEP_INVENTORY)!!) {
+                if(it.entity.location.y > 200 && it.entity.location.distance(Location(Bukkit.getWorld("world"),0.0,201.0,0.0)) < 50) {
+                    it.keepInventory = true
+                    return@listen
+                }
                 val arrayList = arrayListOf<ItemStack>()
                 for (itemStack in it.drops) {
                     arrayList.add(itemStack)
